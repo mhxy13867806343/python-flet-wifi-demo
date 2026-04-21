@@ -1,5 +1,6 @@
 import flet as ft
 from wifi_scanner import scan_wifi_list, get_known_wifi_ssids, get_wifi_password, connect_wifi
+from db import init_db, get_all_passwords, save_password
 
 def main(page: ft.Page):
     # 使用 AppBar 替代窗口的 Title
@@ -17,7 +18,10 @@ def main(page: ft.Page):
         visible=False,
     )
 
-    password_cache = {}
+    # 初始化数据库
+    init_db()
+    
+    password_cache = get_all_passwords()
     selected_wifi = {"ssid": "", "bssid": "", "signal": None, "security": ""}
 
     toast_text = ft.Text("", color=ft.Colors.WHITE, size=13)
@@ -92,8 +96,10 @@ def main(page: ft.Page):
             show_message("未读取到已保存的密码（可能未保存，或在系统钥匙串里需要重复授权）")
             return
             
-        # 存入缓存
+        # 存入缓存并持久化到 SQLite 数据库
         password_cache[ssid] = pwd
+        save_password(ssid, pwd)
+        
         password_input.value = pwd
         password_input.visible = True
         get_password_btn.visible = False
