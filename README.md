@@ -22,9 +22,11 @@ pip install flet
 
 ### 3. 运行项目
 
-执行以下命令启动应用：
+推荐使用虚拟环境来运行本项目。执行以下命令进入项目目录、激活虚拟环境并启动应用：
 
 ```bash
+cd "/Users/hooksvue/Desktop/trae solo ai -demo-flet" 
+source venv/bin/activate 
 python main.py
 ```
 
